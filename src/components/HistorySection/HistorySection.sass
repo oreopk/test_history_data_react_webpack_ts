@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+$font-ptsans: 'PT Sans', sans-serif;
+$bg-page: #f4f6fb
+$bg-panel: #ffffff
+$text: #31415f
+$text-muted: #6b7a99
+$border: #e5eaf3
+$blue1: #5c63f5
+$blue2: #4f59f2
+$pink1: #ff4fa1
+$pink2: #ff6fb0
+$radius: 12px
+$shadow: 0 10px 30px rgba(24,39,75,.06)
+
+*
+  font-family: $font-ptsans
+
+.container
+  position: relative
+  width: 1440px
+  height: 97vh
+  margin-left: auto;
+  margin-right: auto
+
+.top
+  position: absolute
+  top: 170px
+  left: 0
+  right: 0
+  display: flex
+  justify-content: center
+  align-items: center
+  column-gap: 48px
+
+
+.bottom
+  position: absolute
+  top: 697px
+  left: 80px
+  right: 0
+  width: 100%
+
+.title-wrap
+  top: 170px;
+  position: absolute
+  padding-left: 16px
+
+.title-bar
+  position: absolute
+  left: 0
+  top: 8px
+  bottom: 8px
+  width: 4px
+  border-radius: 4px
+  background: linear-gradient(180deg, $blue1 0%, $pink1 100%)
+
+.title
+  margin: 0
+  color: $text
+  font-weight: 800
+  font-size: clamp(28px, 2.2vw + 8px, 44px)
+  line-height: 1.05
+  letter-spacing: -0.02em
+
+.stage
+  display: flex
+  justify-content: center
+  align-items: center
+  position: relative
+  margin: auto auto
+  min-height: 530px
+
+.years
+  position: absolute
+  top: 50%;
+  left: 47%;
+  pointer-events: none
+  transform: translate(-50%, -50%);
+
+.year
+  font-weight: 800
+  font-size: clamp(96px, 14vw, 200px)
+  line-height: 160px
+  letter-spacing: -2%;
+  text-align: center
+  background-clip: text
+  color: transparent
+
+.year--start
+  background-image: linear-gradient(180deg, $blue1 0%, $blue2 100%)
+
+.year--end
+  background-image: linear-gradient(180deg, $pink1 0%, $pink2 100%)
+
+.circle
+  position: relative
+  width:536px
+  height: 530px;
+  border-radius: 50%
+  border: 1px solid $border
+  pointer-events: none
+  transform: rotate(30deg);
+
+.dot
+  position: absolute
+  width: 6px
+  height: 6px
+  background: #2a3d66
+  border-radius: 50%
+  top: 50%
+  left: 50%
+
+.dot--1
+  transform: translate(-50%, -50%) translateY(-265px) // 0
+
+.dot--2
+  transform: translate(0%, -50%) rotate(60deg) translateY(-265px) rotate(-60deg) // 60
+
+.dot--3
+  transform: translate(0%, -50%) rotate(120deg) translateY(-265px) rotate(-120deg) // 120
+
+.dot--4
+  transform: translate(0%, -50%) rotate(180deg) translateY(-265px) rotate(-180deg) // 180
+
+.dot--5
+  transform: translate(-100%, -50%) rotate(240deg) translateY(-265px) rotate(-240deg) // 240
+
+.dot--6
+  transform: translate(-100%, -50%) rotate(300deg) translateY(-265px) rotate(-300deg) // 300
+
+.category
+  position: absolute
+  display: flex
+  align-items: center
+  gap: 10px
+  color: $text
+  font-weight: 600
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%) rotate(0deg) translateY(-265px) rotate(-30deg)
+
+.category__label
+  position: absolute
+  transform: translate(-50%, -50%) rotate(0deg) rotate(0deg)
+  top: 50%
+  font-size: 20px
+  left: 190%
+
+.badge
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 56px
+  height: 56px
+  background: $bg-panel
+  border: 1px solid $border
+  border-radius: 50%
+  color: $text
+  font-weight: 700
+
+.controls
+  width: 120px
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 20px
+  color: $text-muted
+  margin-bottom: 56px
+
+.counter
+  font-size: 14px
+  font-weight: 400
+  color: $text
+  align-self: start
+
+.nav
+  display: flex
+  flex-direction: row
+  gap: 20px
+
+.icon-btn
+  width: 50px
+  height: 50px
+  border-radius: 50%
+  background: $bg-panel
+  border: 1px solid $border
+  color: $text
+  display: grid
+  place-items: center
+
+.grid
+  display: flex
+  gap: 80px
+  margin-right: 160px
+
+.card
+  position: relative
+  display: flex
+  flex-direction: column
+  gap: 15px
+
+.card__year
+  margin: 0 0 0px
+  color: $blue1
+  font-weight: 400
+  font-size: 25px
+  letter-spacing: 0
+  text-transform: uppercase
+
+.card__text
+  margin: 0
+  color: $text-muted
+  font-size: 20px
+  line-height: 30px
+  font-weight: 400
+  height: 90px
+  min-width: 320px
+  text-align: left
+  white-space: pre-line;
+
+.card--second
+  min-width: 420px
+
+
+.small-next
+  position: absolute
+  right: -80px
+  top: 41px
+  width: 40px
+  height: 40px
+  border-radius: 50%
+  background: $bg-panel
+  border: 1px solid $border
+  color: $text
+  display: grid
+  place-items: center

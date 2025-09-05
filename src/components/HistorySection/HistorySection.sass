@@ -1,4 +1,6 @@
+@use "sass:math";
 @import url('https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 
 $font-ptsans: 'PT Sans', sans-serif;
 $bg-page: #f4f6fb
@@ -101,7 +103,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   border: 1px solid $border
   pointer-events: none
   transform: rotate(30deg);
-
+  transition: transform 0.5s ease-in-out
 .dot
   position: absolute
   width: 6px
@@ -110,24 +112,45 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   border-radius: 50%
   top: 50%
   left: 50%
+  &::before
+      content: ''
+      position: absolute
+      width: 56px
+      height: 56px
+      background: $bg-panel
+      border: 1px solid $border
+      border-radius: 50%
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%) scale(0)
+      opacity: 0
+      transition: all 0.3s ease
+      z-index: -1
+  &:hover::before
+    transform: translate(-50%, -50%) scale(1)
+    opacity: 1
+// .dot--1
+//   transform: translate(-50%, -50%) translateY(-265px) // 0
 
-.dot--1
-  transform: translate(-50%, -50%) translateY(-265px) // 0
+// .dot--2
+//   transform: translate(0%, -50%) rotate(60deg) translateY(-265px) rotate(-60deg) // 60
 
-.dot--2
-  transform: translate(0%, -50%) rotate(60deg) translateY(-265px) rotate(-60deg) // 60
+// .dot--3
+//   transform: translate(0%, -50%) rotate(120deg) translateY(-265px) rotate(-120deg) // 120
 
-.dot--3
-  transform: translate(0%, -50%) rotate(120deg) translateY(-265px) rotate(-120deg) // 120
+// .dot--4
+//   transform: translate(0%, -50%) rotate(180deg) translateY(-265px) rotate(-180deg) // 180
 
-.dot--4
-  transform: translate(0%, -50%) rotate(180deg) translateY(-265px) rotate(-180deg) // 180
+// .dot--5
+//   transform: translate(-100%, -50%) rotate(240deg) translateY(-265px) rotate(-240deg) // 240
 
-.dot--5
-  transform: translate(-100%, -50%) rotate(240deg) translateY(-265px) rotate(-240deg) // 240
+// .dot--6
+//   transform: translate(-100%, -50%) rotate(300deg) translateY(-265px) rotate(-300deg) // 300
 
-.dot--6
-  transform: translate(-100%, -50%) rotate(300deg) translateY(-265px) rotate(-300deg) // 300
+@for $i from 1 through 6
+  .dot--#{$i}
+    $angle: math.div(360deg, 6) * ($i - 1)
+    transform: translate(-50%, -50%) rotate($angle) translateY(-265px) rotate(-$angle)
 
 .category
   position: absolute
@@ -138,14 +161,36 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   font-weight: 600
   top: 50%
   left: 50%
-  transform: translate(-50%, -50%) rotate(0deg) translateY(-265px) rotate(-30deg)
+  // transform: translate(-50%, -50%) rotate(0deg) translateY(-265px) rotate(-30deg)
+
+.category--active
+  opacity: 1
+  transform: translate(-50%, -50%) scale(1)
+
+  
+.category--leaving
+  opacity: 0
+  transform: translate(-50%, -50%) scale(0)
+
+.category--hidden
+  opacity: 0
+  transform: translate(-50%, -50%) scale(0)
+
+@for $i from 1 through 6
+  .category--#{$i}
+    $angle: math.div(360deg, 6) * ($i - 1)
+    transform: translate(-50%, -50%) rotate($angle) translateY(-265px) rotate(-$angle)
 
 .category__label
   position: absolute
-  transform: translate(-50%, -50%) rotate(0deg) rotate(0deg)
+  transform: translate(-50%, -50%) rotate(0deg)
   top: 50%
   font-size: 20px
   left: 190%
+  transition: all 0.5s ease-in-outэ
+  
+.category--active .category__label
+  opacity: 1
 
 .badge
   display: flex
@@ -158,6 +203,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   border-radius: 50%
   color: $text
   font-weight: 700
+  transition: all 0.5s ease-in-out
 
 .controls
   width: 120px
@@ -188,6 +234,8 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   color: $text
   display: grid
   place-items: center
+  cursor: pointer
+
 
 .grid
   display: flex

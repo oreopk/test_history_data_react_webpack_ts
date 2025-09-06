@@ -23,10 +23,11 @@ const categories: Category[] = [
 ];
 
 export default function HistorySection() {
-  const [rotation, setRotation] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [rotation, setRotation] = useState(30);
   const [prevIndex, setPrevIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [hoveredDot, setHoveredDot] = useState<number | null>(null);
 
   const handleNext = () => {
     if (isAnimating) return;
@@ -50,9 +51,6 @@ export default function HistorySection() {
     setTimeout(() => setIsAnimating(false), 500);
   };
 
-  const currentCategory = categories[currentIndex];
-  const prevCategory = categories[prevIndex];
-
   return (
       <div className="container">
         <div className="title-wrap">
@@ -63,33 +61,34 @@ export default function HistorySection() {
         </div>
         <div className="top">
           <div className="stage">
-            <div className="circle" style={{ transform: `rotate(${rotation+30}deg)` }}>
-                          <span className="dot dot--1" />
-              <span className="dot dot--2" />
-              <span className="dot dot--3" />
-              <span className="dot dot--4" />
-              <span className="dot dot--5" />
-              <span className="dot dot--6" />
-              {categories.map((category, index) => (
-              <div
-                key={category.id}
-                className={`category category--${index + 1} ${
-                  index === currentIndex ? 'category--active' : 
-                  index === prevIndex ? 'category--leaving' : 'category--hidden'
-                }`}
-              >
-                <span className="badge">{category.badge}</span>
-                <span className="category__label">{category.label}</span>
-              </div>
-            ))}
-              {/* <div className="category">
-                <span className="badge">6</span>
-                <span className="category__label">Наука</span> */}
-            {/* </div> */}
+            <div className="circle" style={{ transform: `rotate(${rotation}deg)` }}>
+              {categories.map((_, index) => (
+                <span 
+                  key={`dot-${index}`} 
+                  className={`dot dot--${index + 1}`}
+                  onMouseEnter={() => setHoveredDot(index)}
+                  onMouseLeave={() => setHoveredDot(null)}
+                />
+              ))}
+
+             {categories.map((category, index) => {
+                const isActive = index === currentIndex;
+                const isHovered = index === hoveredDot;
+                const isLeaving = isAnimating && index === prevIndex;
+                
+                let className = `category category--${index + 1}`;
+                if (isActive) className += ' category--active';
+                if (isLeaving) className += ' category--leaving';
+                if (isHovered && !isActive) className += ' category--hover';
+                
+                return (
+                  <div key={category.id} className={className}>
+                    <span className="badge">{category.badge}</span>
+                    <span className="category__label">{category.label}</span>
+                  </div>
+                );
+              })}
             </div>
-
-   
-
             <div className="years">
               <span className="year year--start">2015&nbsp;&nbsp;</span>
               <span className="year year--end">2022</span>

@@ -1,8 +1,7 @@
-@use "sass:math";
-@import url('https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@use "sass:math"
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap')
 
-
-$font-ptsans: 'PT Sans', sans-serif;
+$font-ptsans: 'PT Sans', sans-serif
 $bg-page: #f4f6fb
 $bg-panel: #ffffff
 $text: #31415f
@@ -22,7 +21,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   position: relative
   width: 1440px
   height: 97vh
-  margin-left: auto;
+  margin-left: auto
   margin-right: auto
 
 .top
@@ -35,7 +34,6 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   align-items: center
   column-gap: 48px
 
-
 .bottom
   position: absolute
   top: 697px
@@ -44,7 +42,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   width: 100%
 
 .title-wrap
-  top: 170px;
+  top: 170px
   position: absolute
   padding-left: 16px
 
@@ -75,16 +73,16 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
 
 .years
   position: absolute
-  top: 50%;
-  left: 47%;
+  top: 50%
+  left: 47%
   pointer-events: none
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%)
 
 .year
   font-weight: 800
   font-size: clamp(96px, 14vw, 200px)
   line-height: 160px
-  letter-spacing: -2%;
+  letter-spacing: -2%
   text-align: center
   background-clip: text
   color: transparent
@@ -97,13 +95,13 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
 
 .circle
   position: relative
-  width:536px
-  height: 530px;
+  width: 536px
+  height: 530px
   border-radius: 50%
   border: 1px solid $border
   pointer-events: none
-  transform: rotate(30deg);
   transition: transform 0.5s ease-in-out
+
 .dot
   position: absolute
   width: 6px
@@ -112,40 +110,28 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   border-radius: 50%
   top: 50%
   left: 50%
+  cursor: pointer
+  pointer-events: auto
+  z-index: 0
+  
   &::before
-      content: ''
-      position: absolute
-      width: 56px
-      height: 56px
-      background: $bg-panel
-      border: 1px solid $border
-      border-radius: 50%
-      top: 50%
-      left: 50%
-      transform: translate(-50%, -50%) scale(0)
-      opacity: 0
-      transition: all 0.3s ease
-      z-index: -1
+    content: ''
+    position: absolute
+    width: 56px
+    height: 56px
+    background: $bg-panel
+    border: 1px solid $border
+    border-radius: 50%
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%) scale(0)
+    opacity: 0
+    transition: all 0.3s ease
+    z-index: -1
+  
   &:hover::before
     transform: translate(-50%, -50%) scale(1)
     opacity: 1
-// .dot--1
-//   transform: translate(-50%, -50%) translateY(-265px) // 0
-
-// .dot--2
-//   transform: translate(0%, -50%) rotate(60deg) translateY(-265px) rotate(-60deg) // 60
-
-// .dot--3
-//   transform: translate(0%, -50%) rotate(120deg) translateY(-265px) rotate(-120deg) // 120
-
-// .dot--4
-//   transform: translate(0%, -50%) rotate(180deg) translateY(-265px) rotate(-180deg) // 180
-
-// .dot--5
-//   transform: translate(-100%, -50%) rotate(240deg) translateY(-265px) rotate(-240deg) // 240
-
-// .dot--6
-//   transform: translate(-100%, -50%) rotate(300deg) translateY(-265px) rotate(-300deg) // 300
 
 @for $i from 1 through 6
   .dot--#{$i}
@@ -161,20 +147,24 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   font-weight: 600
   top: 50%
   left: 50%
-  // transform: translate(-50%, -50%) rotate(0deg) translateY(-265px) rotate(-30deg)
+  opacity: 0
+  transition: all 0.3s ease
+  pointer-events: none
 
 .category--active
   opacity: 1
-  transform: translate(-50%, -50%) scale(1)
+  transform: translate(0, 0) scale(1)
+  pointer-events: auto
 
-  
 .category--leaving
   opacity: 0
-  transform: translate(-50%, -50%) scale(0)
 
 .category--hidden
   opacity: 0
-  transform: translate(-50%, -50%) scale(0)
+  transform: scale(0)
+
+.category--hover
+  opacity: 1 !important
 
 @for $i from 1 through 6
   .category--#{$i}
@@ -187,10 +177,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   top: 50%
   font-size: 20px
   left: 190%
-  transition: all 0.5s ease-in-outэ
-  
-.category--active .category__label
-  opacity: 1
+  transition: all 0.5s ease-in-out
 
 .badge
   display: flex
@@ -236,7 +223,6 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   place-items: center
   cursor: pointer
 
-
 .grid
   display: flex
   gap: 80px
@@ -265,11 +251,10 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   height: 90px
   min-width: 320px
   text-align: left
-  white-space: pre-line;
+  white-space: pre-line
 
 .card--second
   min-width: 420px
-
 
 .small-next
   position: absolute

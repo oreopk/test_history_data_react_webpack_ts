@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./HistorySection.sass";
+import SwiperCore from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+
+SwiperCore.use([Navigation]);
 
 type Item = { year: number; text: string };
 type Category = { id: number; badge: string; label: string };
@@ -8,9 +13,9 @@ type DateRange = { start: number; end: number };
 const categoryItems: Item[][] = [
   [
     { year: 2005, text: "Открытие новой планеты в солнечной системе" },
-    { year: 2006, text: "Открытие новой галактики" },
+    { year: 2006, text: "Открытие новой планеты в солнечной системе2" },
     { year: 2007, text: "Прорыв в исследовании стволовых клеток" },
-    { year: 2008, text: "Прорыв в исследовании рака" },
+    { year: 2008, text: "Прорыв в исследовании стволовых клеток" },
     { year: 2009, text: "Запуск большого адронного коллайдера" }
   ],
   [
@@ -55,7 +60,7 @@ const dateRanges: DateRange[] = [
   { start: 2011, end: 2013 },
   { start: 2014, end: 2016 },
   { start: 2017, end: 2019 },
-  { start: 2020, end: 2021 },
+  { start: 2015, end: 2022 },
   { start: 2022, end: 2023 }
 ];
 
@@ -72,6 +77,8 @@ export default function HistorySection() {
     start: null,
     end: null
   });
+
+  const swiperRef = useRef<any>(null);
 
   useEffect(() => {
     setCurrentItems(categoryItems[currentIndex]);
@@ -197,7 +204,7 @@ export default function HistorySection() {
               })}
             </div>
             <div className="years">
-              <span className="year year--start">{displayDates.start}&nbsp;&nbsp;</span>
+              <span className="year year--start">{displayDates.start}</span>
               <span className="year year--end">{displayDates.end}</span>
             </div>
           </div>
@@ -223,20 +230,38 @@ export default function HistorySection() {
             </div>
           </div>
 
-          <div className="grid">
-            {currentItems.map((it, i) => (
-              <article key={it.year} className="card">
-                <h3 className="card__year">{it.year}</h3>
-                <p className={`card__text ${i === 1 ? 'card--second' : ''}`}>{it.text}</p>
-                {i === currentItems.length - 1 && (
-                  <button className="small-next">
-                    <svg width="12" height="12" viewBox="0 0 24 24">
-                      <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" />
-                    </svg>
-                  </button>
-                )}
-              </article>
-            ))}
+          <div className="cards-container">
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={'80px'}
+              slidesPerView={3}
+              navigation={{
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              }}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+            >
+              {currentItems.map((it, i) => (
+                <SwiperSlide key={`${it.year}-${i}`}>
+                  <article className={`card ${i === 1 ? 'card--second' : ''}`}>
+                    <h3 className="card__year">{it.year}</h3>
+                    <p className="card__text">{it.text}</p>
+                  </article>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          <button className="btn_swiper swiper-button-prev">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18l-6-6 6-6" stroke="#5c63f5" strokeWidth="2"/>
+            </svg>
+          </button>
+          <button className="btn_swiper swiper-button-next">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M9 6l6 6-6 6" stroke="#5c63f5" strokeWidth="2"/>
+            </svg>
+          </button>
           </div>
         </div>
       </div>

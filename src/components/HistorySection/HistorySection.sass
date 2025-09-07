@@ -16,23 +16,37 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
 
 *
   font-family: $font-ptsans
+body
+  margin: 0
+  background: #F4F5F9;
 
 .container
   position: relative
   width: 1440px
-  height: 97vh
+  height: 100vh
   margin-left: auto
   margin-right: auto
 
 .top
   position: absolute
-  top: 170px
+  top: 0
   left: 0
   right: 0
   display: flex
   justify-content: center
-  align-items: center
   column-gap: 48px
+  height: 100%
+  border-left: 1.5px solid rgba(66, 86, 122, 0.1);
+  border-right: 1.5px solid rgba(66, 86, 122, 0.1);
+  &::before
+    content: ''
+    position: absolute
+    top: 480px
+    left: 0
+    right: 0
+    height: 1px
+    background: rgba(66, 86, 122, 0.1)
+    z-index: 1
 
 .bottom
   position: absolute
@@ -40,6 +54,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   left: 80px
   right: 0
   width: 100%
+  z-index: 0
 
 .title-wrap
   top: 170px
@@ -66,23 +81,25 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
 .stage
   display: flex
   justify-content: center
-  align-items: center
   position: relative
-  margin: auto auto
+  margin-top: 215px
   min-height: 530px
 
 .years
+  display: flex
+  gap: 90px
   position: absolute
-  top: 50%
+  margin-top: 185px
   left: 47%
   pointer-events: none
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, 0%)
+  z-index: 1
 
 .year
   font-weight: 800
   font-size: clamp(96px, 14vw, 200px)
   line-height: 160px
-  letter-spacing: -2%
+  letter-spacing: -2px
   text-align: center
   background-clip: text
   color: transparent
@@ -101,6 +118,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   border: 1px solid $border
   pointer-events: none
   transition: transform 0.5s ease-in-out
+  z-index: 1
 
 .dot
   position: absolute
@@ -112,7 +130,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   left: 50%
   cursor: pointer
   pointer-events: auto
-  z-index: 0
+  z-index: 2
   
   &::before
     content: ''
@@ -150,14 +168,17 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   opacity: 0
   transition: all 0.3s ease
   pointer-events: none
+  z-index: 3
 
 .category--active
   opacity: 1
   transform: translate(0, 0) scale(1)
   pointer-events: auto
+  z-index: 3
 
 .category--leaving
   opacity: 0
+  z-index: 3
 
 .category--hidden
   opacity: 0
@@ -165,6 +186,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
 
 .category--hover
   opacity: 1 !important
+  z-index: 3
 
 @for $i from 1 through 6
   .category--#{$i}
@@ -191,6 +213,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   color: $text
   font-weight: 700
   transition: all 0.5s ease-in-out
+  z-index: 3
 
 .controls
   width: 120px
@@ -231,6 +254,7 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
 .card
   position: relative
   display: flex
+  max-width: 320px
   flex-direction: column
   gap: 15px
 
@@ -254,17 +278,57 @@ $shadow: 0 10px 30px rgba(24,39,75,.06)
   white-space: pre-line
 
 .card--second
-  min-width: 420px
+  max-width: 400px !important 
 
-.small-next
+.swiper-button-next::after,
+.swiper-button-prev::after
+  display: none !important
+
+.btn_swiper
   position: absolute
-  right: -80px
-  top: 41px
+  top: 50%
+  transform: translateY(-50%)
   width: 40px
   height: 40px
-  border-radius: 50%
-  background: $bg-panel
+  background: white
   border: 1px solid $border
-  color: $text
-  display: grid
-  place-items: center
+  border-radius: 50%
+  z-index: 10
+  cursor: pointer
+  display: flex
+  align-items: center
+  justify-content: center
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)
+  transition: all 0.3s ease
+
+  svg
+    transition: stroke 0.3s ease
+    stroke: $blue1
+    width: 160%
+    height: 160%  
+
+  &:hover
+    background: $blue1
+    border-color: $blue1
+    svg
+      stroke: white
+
+.swiper-button-prev
+  left: -60px
+
+.swiper-button-next
+  right: -65px
+
+.cards-container
+  position: relative
+  width: 85%
+
+.swiper-slide
+  width: auto !important
+  height: auto
+
+.swiper-slide
+  margin-right: 80px !important
+
+  &:last-child
+    margin-right: 0 !important

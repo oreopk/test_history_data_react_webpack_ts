@@ -1,13 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./HistorySection.sass";
 
 type Item = { year: number; text: string };
 type Category = { id: number; badge: string; label: string };
+type DateRange = { start: number; end: number };
 
-const items: Item[] = [
-  { year: 2015, text: "13 сентября — частное солнечное затмение, видимое в Южной \n\r Африке и части Антарктиды" },
-  { year: 2016, text: "Телескоп «Хаббл» обнаружил самую \n\r удалённую из всех обнаруженных галактик, получившую обозначение GN-z11" },
-  { year: 2017, text: "Компания Tesla официально \n\r представила первый в мире электрический грузовик Tesla Semi" },
+const categoryItems: Item[][] = [
+  [
+    { year: 2005, text: "Открытие новой планеты в солнечной системе" },
+    { year: 2006, text: "Открытие новой галактики" },
+    { year: 2007, text: "Прорыв в исследовании стволовых клеток" },
+    { year: 2008, text: "Прорыв в исследовании рака" },
+    { year: 2009, text: "Запуск большого адронного коллайдера" }
+  ],
+  [
+    { year: 2011, text: "Презентация первого смартфона с голосовым помощником" },
+    { year: 2012, text: "Запуск облачного хранилища Google Drive" },
+    { year: 2013, text: "Появление носимых технологий: умные часы" }
+  ],
+  [
+    { year: 2014, text: "Посадка зонда на комету Чурюмова-Герасименко" },
+    { year: 2015, text: "13 сентября — частное солнечное затмение" },
+    { year: 2016, text: "Обнаружение гравитационных волн" }
+  ],
+  [
+    { year: 2017, text: "Первая успешная редактирование генома человека" },
+    { year: 2018, text: "Разработка искусственной поджелудочной железы" },
+    { year: 2019, text: "Создание вакцины от Эболы" }
+  ],
+  [
+    { year: 2020, text: "Рекордное снижение выбросов CO2 из-за пандемии" },
+    { year: 2021, text: "Запуск мирового альянса по защите океанов" }
+  ],
+  [
+    { year: 2022, text: "Первая NFT-выставка в Лувре" },
+    { year: 2023, text: "ИИ создает картину проданную за миллион долларов" }
+  ]
 ];
 
 const TOTAL_DOTS = 6;
@@ -22,12 +50,72 @@ const categories: Category[] = [
   { id: 6, badge: "6", label: "Искусство" }
 ];
 
+const dateRanges: DateRange[] = [
+  { start: 2005, end: 2010 },
+  { start: 2011, end: 2013 },
+  { start: 2014, end: 2016 },
+  { start: 2017, end: 2019 },
+  { start: 2020, end: 2021 },
+  { start: 2022, end: 2023 }
+];
+
 export default function HistorySection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [rotation, setRotation] = useState(30);
   const [prevIndex, setPrevIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hoveredDot, setHoveredDot] = useState<number | null>(null);
+  const [displayDates, setDisplayDates] = useState<DateRange>(dateRanges[0]);
+  const [currentItems, setCurrentItems] = useState<Item[]>(categoryItems[0]);
+  
+  const animationRef = useRef<{ start: NodeJS.Timeout | null; end: NodeJS.Timeout | null }>({
+    start: null,
+    end: null
+  });
+
+  useEffect(() => {
+    setCurrentItems(categoryItems[currentIndex]);
+    
+    if (animationRef.current.start) clearInterval(animationRef.current.start);
+    if (animationRef.current.end) clearInterval(animationRef.current.end);
+    
+    const targetDates = dateRanges[currentIndex];
+    
+    animationRef.current.start = setInterval(() => {
+      setDisplayDates(prev => {
+        if (prev.start === targetDates.start) {
+          if (animationRef.current.start) clearInterval(animationRef.current.start);
+          return prev;
+        }
+        
+        const newStart = prev.start < targetDates.start 
+          ? prev.start + 1 
+          : prev.start - 1;
+        
+        return { ...prev, start: newStart };
+      });
+    }, 80);
+
+    animationRef.current.end = setInterval(() => {
+      setDisplayDates(prev => {
+        if (prev.end === targetDates.end) {
+          if (animationRef.current.end) clearInterval(animationRef.current.end);
+          return prev;
+        }
+        
+        const newEnd = prev.end < targetDates.end 
+          ? prev.end + 1 
+          : prev.end - 1;
+        
+        return { ...prev, end: newEnd };
+      });
+    }, 80);
+
+    return () => {
+      if (animationRef.current.start) clearInterval(animationRef.current.start);
+      if (animationRef.current.end) clearInterval(animationRef.current.end);
+    };
+  }, [currentIndex]);
 
   const handleNext = () => {
     if (isAnimating) return;
@@ -40,13 +128,31 @@ export default function HistorySection() {
     setTimeout(() => setIsAnimating(false), 500);
   };
 
-   const handlePrev = () => {
+  const handlePrev = () => {
     if (isAnimating) return;
     
     setIsAnimating(true);
     setPrevIndex(currentIndex);
     setRotation(prev => prev + DEGREES_PER_DOT);
     setCurrentIndex(prev => (prev - 1 + TOTAL_DOTS) % TOTAL_DOTS);
+    
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  const handleDotClick = (index: number) => {
+    if (isAnimating || index === currentIndex) return;
+    
+    setIsAnimating(true);
+    setPrevIndex(currentIndex);
+    
+    const diff = index - currentIndex;
+    const absDiff = Math.abs(diff);
+    const shortestPath = absDiff > TOTAL_DOTS / 2 
+      ? (TOTAL_DOTS - absDiff) * (diff > 0 ? -1 : 1) 
+      : diff;
+    
+    setRotation(prev => prev - (shortestPath * DEGREES_PER_DOT));
+    setCurrentIndex(index);
     
     setTimeout(() => setIsAnimating(false), 500);
   };
@@ -68,6 +174,7 @@ export default function HistorySection() {
                   className={`dot dot--${index + 1}`}
                   onMouseEnter={() => setHoveredDot(index)}
                   onMouseLeave={() => setHoveredDot(null)}
+                  onClick={() => handleDotClick(index)}
                 />
               ))}
 
@@ -90,8 +197,8 @@ export default function HistorySection() {
               })}
             </div>
             <div className="years">
-              <span className="year year--start">2015&nbsp;&nbsp;</span>
-              <span className="year year--end">2022</span>
+              <span className="year year--start">{displayDates.start}&nbsp;&nbsp;</span>
+              <span className="year year--end">{displayDates.end}</span>
             </div>
           </div>
         </div>
@@ -117,11 +224,11 @@ export default function HistorySection() {
           </div>
 
           <div className="grid">
-            {items.map((it, i) => (
+            {currentItems.map((it, i) => (
               <article key={it.year} className="card">
                 <h3 className="card__year">{it.year}</h3>
                 <p className={`card__text ${i === 1 ? 'card--second' : ''}`}>{it.text}</p>
-                {i === items.length - 1 && (
+                {i === currentItems.length - 1 && (
                   <button className="small-next">
                     <svg width="12" height="12" viewBox="0 0 24 24">
                       <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" />

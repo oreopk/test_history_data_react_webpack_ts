@@ -407,6 +407,29 @@ body
 .mobile-pagination
   display: none !important
 
+.dot
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-266px) rotate(calc(-1 * var(--angle)))
+
+.category
+  --pos: translate(-50%, -50%) rotate(var(--angle)) translateY(-265px)
+  transform: var(--pos) scale(0)
+
+.category--active
+  transform: var(--pos) scale(1)
+  transition: all 0.5s ease-in-out
+
+.category--hover
+  transform: var(--pos) scale(1)
+  transition: all 0.5s ease-in-out
+
+.category--leaving
+  transform: var(--pos) scale(1)
+
+.badge
+  transform: rotate(calc(-1 * var(--rot))) rotate(calc(-1 * var(--angle)))
+
+.category--hover .badge
+  transform: rotate(calc(-1 * var(--rot))) rotate(calc(-1 * var(--angle)))
 
 @media (max-width: 1919px)
   .container

@@ -158,20 +158,25 @@ export default function HistorySection() {
             className="circle"
             style={{ ["--rot" as string]: `${rotation}deg`, transform: `rotate(${rotation}deg)` }}
           >
-            {categories.map((_, index) => (
+            {categories.map((_, index) => {
+            const angle = (360 / categories.length) * index;
+            return (
               <span
                 key={`dot-${index}`}
                 className={`dot dot--${index + 1}`}
+                style={{ ['--angle' as string]: `${angle}deg` }}
                 onMouseEnter={() => setHoveredDot(index)}
                 onMouseLeave={() => setHoveredDot(null)}
                 onClick={() => handleDotClick(index)}
               />
-            ))}
+            );
+          })}
 
             {categories.map((category, index) => {
               const isActive = index === currentIndex;
               const isHovered = index === hoveredDot;
               const isLeaving = isAnimating && index === prevIndex;
+              const angle = (360 / categories.length) * index;
 
               let className = `category category--${index + 1}`;
               if (isActive) className += " category--active";
@@ -179,8 +184,11 @@ export default function HistorySection() {
               if (isHovered && !isActive) className += " category--hover";
 
               return (
-                <div key={category.id} className={className}>
-                  <span className={`badge badge--${category.id}`}>{category.badge}</span>
+                <div
+                  key={category.id} className={className}
+                  style={{ ['--angle' as string]: `${angle}deg` }}
+                >
+                  <span className="badge">{category.badge}</span>
                   <span className={`category__label ${index === labelIndex ? "category__label--visible" : ""}`}>
                     {category.label}
                   </span>

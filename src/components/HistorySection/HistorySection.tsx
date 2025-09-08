@@ -7,6 +7,7 @@ import type { Item } from "./types";
 import { categories } from "./data";
 import { TOTAL_DOTS, DEGREES_PER_DOT } from "./constants";
 import { computeRange } from "./utils";
+import type { Swiper as SwiperType } from "swiper";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -28,7 +29,7 @@ export default function HistorySection() {
     end: null,
   });
 
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setLabelIndex(currentIndex), HOLD_DELAY);
@@ -69,6 +70,16 @@ export default function HistorySection() {
     };
   }, [currentIndex]);
 
+  const resetSwiper = () => {
+    const swiper = swiperRef.current;
+    if (!swiper) return;
+
+    swiper.slideTo(0, 0);
+    swiper.update();
+    swiper.pagination?.render?.();
+    swiper.pagination?.update?.();
+  };
+
   useEffect(() => {
     let swapTimer: NodeJS.Timeout | null = null;
 
@@ -78,6 +89,9 @@ export default function HistorySection() {
         setCurrentItems(categories[currentIndex].items);
         setIsFading(false);
         swiperRef.current?.update?.();
+        requestAnimationFrame(() => {
+          resetSwiper();
+        });
       }, FADE_DURATION);
     }, HOLD_DELAY);
 

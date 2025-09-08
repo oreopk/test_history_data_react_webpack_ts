@@ -126,7 +126,7 @@ body
   height: 530px
   border-radius: 50%
   pointer-events: none
-  transition: transform 0.5s ease-in-out
+  transition: transform 0.8s ease-in-out
   z-index: 1000
   
 .circle_visible
@@ -200,6 +200,7 @@ body
     transition: all 0.3s ease
     transform: scale(1)
     transform: rotate(-30deg)
+    transition-delay: var(--spin-dur, .5s) 
 
 .category--leaving
   opacity: 0
@@ -245,6 +246,7 @@ body
   transform: rotate(-30deg) translateY(6px) scale(.98)
   transition: opacity .3s ease, transform .3s ease
   pointer-events: none
+  transition-delay: 0ms
 
 .category__label--visible
   opacity: 1

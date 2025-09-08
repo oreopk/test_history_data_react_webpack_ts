@@ -1,10 +1,11 @@
 @use "sass:math"
 @import url('https://fonts.googleapis.com/css2?family=Allura&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap')
 
 $font-ptsans: 'PT Sans', sans-serif
 $bg-page: #f4f6fb
-$bg-panel: #ffffff
-$text: #31415f
+$bg-panel: #f4f6fb
+$text: #42567A
 $text-muted: #6b7a99
 $border: #e5eaf3
 $blue1: #5c63f5
@@ -26,7 +27,7 @@ body
   height: 100vh
   margin-left: auto
   margin-right: auto
-
+  transform: translateX(80px) 
 .top
   position: absolute
   top: 0
@@ -57,9 +58,8 @@ body
   z-index: 0
 
 .title-wrap
-  top: 170px
+  top: 168px
   position: absolute
-  padding-left: 16px
 
 .title-bar
   position: absolute
@@ -71,12 +71,12 @@ body
   background: linear-gradient(180deg, $blue1 0%, $pink1 100%)
 
 .title
+  height: 134px
   margin: 0
+  margin-left: 78px
   color: $text
-  font-weight: 800
-  font-size: clamp(28px, 2.2vw + 8px, 44px)
-  line-height: 1.05
-  letter-spacing: -0.02em
+  font-size: 56px
+  font-weight: bold
 
 .stage
   display: flex
@@ -89,11 +89,11 @@ body
   display: flex
   gap: 90px
   position: absolute
-  margin-top: 185px
+  margin-top: 176px
   left: 47%
   pointer-events: none
   transform: translate(-50%, 0%)
-  z-index: 1
+  z-index: 2 
 
 .year
   font-weight: 800
@@ -115,10 +115,19 @@ body
   width: 536px
   height: 530px
   border-radius: 50%
+  pointer-events: none
+  transition: transform 0.5s ease-in-out
+  z-index: 1000
+  
+.circle_visible
+  position: absolute
+  width: 536px
+  height: 530px
+  border-radius: 50%
   border: 1px solid $border
   pointer-events: none
   transition: transform 0.5s ease-in-out
-  z-index: 1
+  z-index: -1000
 
 .dot
   position: absolute
@@ -130,7 +139,7 @@ body
   left: 50%
   cursor: pointer
   pointer-events: auto
-  z-index: 2
+   z-index: 3 !important
   
   &::before
     content: ''
@@ -166,15 +175,18 @@ body
   top: 50%
   left: 50%
   opacity: 0
-  transition: all 0.3s ease
   pointer-events: none
-  z-index: 3
+  z-index: 4 
 
 .category--active
   opacity: 1
-  transform: translate(0, 0) scale(1)
   pointer-events: auto
   z-index: 3
+  .category__label
+    display: block
+    transition: all 0.3s ease
+    transform: scale(1)
+    transform: rotate(-30deg)
 
 .category--leaving
   opacity: 0
@@ -186,20 +198,34 @@ body
 
 .category--hover
   opacity: 1 !important
-  z-index: 3
+  z-index: 3 !important
+  .category__label
+    display: none !important
+  .badge
+    opacity: 1
+    visibility: visible
 
 @for $i from 1 through 6
   .category--#{$i}
     $angle: math.div(360deg, 6) * ($i - 1)
-    transform: translate(-50%, -50%) rotate($angle) translateY(-265px) rotate(-$angle)
+    transform:  translate(-50%, -50%) rotate($angle) translateY(-265px)
+    .badge--#{$i}
+      transform: rotate(calc(-1 * var(--rot))) rotate(-#{$angle})
+
+    &.category--hover .badge--#{$i}
+      transform: rotate(calc(-1 * var(--rot))) rotate(-#{$angle})
 
 .category__label
   position: absolute
-  transform: translate(-50%, -50%) rotate(0deg)
-  top: 50%
+  top: -50%
   font-size: 20px
-  left: 190%
+  left: 70px
   transition: all 0.5s ease-in-out
+  font-family: 'PT Sans'
+  font-weight: 100
+  font-size: 20px
+  font-weight: bold
+  display: none
 
 .badge
   display: flex
@@ -211,9 +237,12 @@ body
   border: 1px solid $border
   border-radius: 50%
   color: $text
-  font-weight: 700
   transition: all 0.5s ease-in-out
   z-index: 3
+  font-family: 'PT Sans'
+  font-weight: 400
+  font-size: 20px
+  transform: none
 
 .controls
   width: 120px
@@ -245,7 +274,8 @@ body
   display: grid
   place-items: center
   cursor: pointer
-
+  &:hover
+    background: #ffffff
 .grid
   display: flex
   gap: 80px
@@ -256,7 +286,7 @@ body
   display: flex
   max-width: 320px
   flex-direction: column
-  gap: 15px
+  gap: 14px
 
 .card__year
   margin: 0 0 0px
@@ -264,6 +294,7 @@ body
   font-weight: 400
   font-size: 25px
   letter-spacing: 0
+  font-family: 'Bebas Neue', 'PT Sans', sans-serif
   text-transform: uppercase
 
 .card__text
@@ -286,7 +317,7 @@ body
 
 .btn_swiper
   position: absolute
-  top: 50%
+  top: 60%
   transform: translateY(-50%)
   width: 40px
   height: 40px
@@ -304,8 +335,8 @@ body
   svg
     transition: stroke 0.3s ease
     stroke: $blue1
-    width: 160%
-    height: 160%  
+    width: 80%
+    height: 80%  
 
   &:hover
     background: $blue1
@@ -317,7 +348,7 @@ body
   left: -60px
 
 .swiper-button-next
-  right: -65px
+  right: -90px
 
 .cards-container
   position: relative

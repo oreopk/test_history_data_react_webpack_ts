@@ -38,8 +38,10 @@ const categoryItems: Item[][] = [
     { year: 2021, text: "Запуск мирового альянса по защите океанов" }
   ],
   [
-    { year: 2022, text: "Первая NFT-выставка в Лувре" },
-    { year: 2023, text: "ИИ создает картину проданную за миллион долларов" }
+    { year: 2015, text: "13 сентября — частное солнечное затмение, видимое в Южной Африке и части Антарктиды" },
+    { year: 2016, text: "Телескоп «Хаббл» обнаружил самую удалённую из всех обнаруженных галактик, получившую обозначение GN-z11" },
+    { year: 2017, text: "Компания Tesla официально представила первый в мире электрический грузовик Tesla Semi" }
+
   ]
 ];
 
@@ -47,12 +49,12 @@ const TOTAL_DOTS = 6;
 const DEGREES_PER_DOT = 360 / TOTAL_DOTS; 
 
 const categories: Category[] = [
-  { id: 1, badge: "1", label: "Наука" },
+  { id: 1, badge: "1", label: "Искусство" },
   { id: 2, badge: "2", label: "Технологии" },
   { id: 3, badge: "3", label: "Космос" },
   { id: 4, badge: "4", label: "Медицина" },
   { id: 5, badge: "5", label: "Экология" },
-  { id: 6, badge: "6", label: "Искусство" }
+  { id: 6, badge: "6", label: "Наука" }
 ];
 
 const dateRanges: DateRange[] = [
@@ -61,7 +63,7 @@ const dateRanges: DateRange[] = [
   { start: 2014, end: 2016 },
   { start: 2017, end: 2019 },
   { start: 2015, end: 2022 },
-  { start: 2022, end: 2023 }
+  { start: 2015, end: 2022 }
 ];
 
 export default function HistorySection() {
@@ -174,7 +176,10 @@ export default function HistorySection() {
         </div>
         <div className="top">
           <div className="stage">
-            <div className="circle" style={{ transform: `rotate(${rotation}deg)` }}>
+            {/* <div className="circle_visible" style={{ transform: `rotate(${rotation}deg)` }}></div>
+            <div className="circle" style={{ transform: `rotate(${rotation}deg)` }}> */}
+            <div className="circle_visible" style={{ ['--rot' as string]: `${rotation}deg`, transform: `rotate(${rotation}deg)` }}></div>
+            <div className="circle" style={{ ['--rot' as string]: `${rotation}deg`, transform: `rotate(${rotation}deg)` }}>
               {categories.map((_, index) => (
                 <span 
                   key={`dot-${index}`} 
@@ -197,7 +202,7 @@ export default function HistorySection() {
                 
                 return (
                   <div key={category.id} className={className}>
-                    <span className="badge">{category.badge}</span>
+                    <span className={`badge badge--${category.id}`}>{category.badge}</span>
                     <span className="category__label">{category.label}</span>
                   </div>
                 );
@@ -213,7 +218,7 @@ export default function HistorySection() {
         <div className="bottom">
           <div className="controls">
              <span className="counter">
-            <b>{(currentIndex + 1).toString().padStart(2, '0')}</b>
+            <span>{(currentIndex + 1).toString().padStart(2, '0')}</span>
             /<span className="total">{TOTAL_DOTS.toString().padStart(2, '0')}</span>
           </span>
             <div className="nav">
@@ -254,12 +259,12 @@ export default function HistorySection() {
             </Swiper>
           <button className="btn_swiper swiper-button-prev">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18l-6-6 6-6" stroke="#5c63f5" strokeWidth="2"/>
+              <path d="M15 18l-6-6 6-6" stroke="#3877EE" strokeWidth="2"/>
             </svg>
           </button>
           <button className="btn_swiper swiper-button-next">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M9 6l6 6-6 6" stroke="#5c63f5" strokeWidth="2"/>
+              <path d="M9 6l6 6-6 6" stroke="#3877EE" strokeWidth="2"/>
             </svg>
           </button>
           </div>

@@ -3,94 +3,12 @@ import "./HistorySection.sass";
 import SwiperCore from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import type { Item } from "./types";
+import { categories } from "./data";
+import { TOTAL_DOTS, DEGREES_PER_DOT } from "./constants";
+import { computeRange } from "./utils";
 
 SwiperCore.use([Navigation, Pagination]);
-
-type Item = { year: number; text: string };
-type Category = {
-  id: number;
-  badge: string;
-  label: string;
-  items: Item[];
-};
-
-export const categories: Category[] = [
-  {
-    id: 1,
-    badge: "1",
-    label: "Искусство",
-    items: [
-      { year: 2015, text: "Открытие музея The Broad в Лос-Анджелесе" },
-      { year: 2018, text: "Картина Бэнкси частично уничтожилась на аукционе после продажи" },
-      { year: 2019, text: "Венецианская биеннале фиксирует поворот к экологической повестке в современном искусстве" },
-      { year: 2021, text: "Рекордная продажа NFT-арта (Beeple) запускает бум цифровых аукционов" }
-    ]
-  },
-  {
-    id: 2,
-    badge: "2",
-    label: "Технологии",
-    items: [
-      { year: 2007, text: "Выход первого iPhone и старт эры смартфонов" },
-      { year: 2008, text: "Появление Android и магазина приложений" },
-      { year: 2016, text: "AlphaGo обыгрывает Ли Седоля, прорыв в ИИ" },
-      { year: 2020, text: "Переход ноутбуков Apple на чипы собственного дизайна (M1)" }
-    ]
-  },
-  {
-    id: 3,
-    badge: "3",
-    label: "Космос",
-    items: [
-      { year: 2012, text: "Посадка марсохода Curiosity в кратере Гейл" },
-      { year: 2014, text: "Зонд Philae совершает посадку на комету 67P/Чурюмова-Герасименко" },
-      { year: 2015, text: "Аппарат New Horizons передаёт снимки Плутона" },
-      { year: 2020, text: "Первый пилотируемый запуск Crew Dragon (SpaceX) к МКС" },
-      { year: 2021, text: "Запуск космического телескопа Джеймс Уэбб" }
-    ]
-  },
-  {
-    id: 4,
-    badge: "4",
-    label: "Медицина",
-    items: [
-      { year: 2013, text: "CRISPR-редактирование генома становится ключевым инструментом биомедицины" },
-      { year: 2017, text: "Одобрены первые терапии CAR-T для лечения онкогематологических заболеваний" },
-      { year: 2018, text: "Системы «искусственной поджелудочной» выходят на рынок для пациентов с диабетом" },
-      { year: 2020, text: "Первые вакцины против COVID-19 на основе мРНК" }
-    ]
-  },
-  {
-    id: 5,
-    badge: "5",
-    label: "Экология",
-    items: [
-      { year: 2015, text: "Принято Парижское соглашение по климату" },
-      { year: 2019, text: "ЕС утверждает директиву по сокращению одноразового пластика" },
-      { year: 2020, text: "Глобальное падение выбросов CO₂ на фоне пандемии" },
-      { year: 2022, text: "Глобальное соглашение по биоразнообразию (рамка Куньмин-Монреаль)" }
-    ]
-  },
-  {
-    id: 6,
-    badge: "6",
-    label: "Наука",
-    items: [
-      { year: 2012, text: "Обнаружение бозона Хиггса на БАК" },
-      { year: 2016, text: "Подтверждено первое прямое наблюдение гравитационных волн (LIGO)" },
-      { year: 2019, text: "Заявление о «квантовом превосходстве» от Google" },
-      { year: 2021, text: "AlphaFold публикует предсказания структур белков в беспрецедентном масштабе" }
-    ]
-  }
-];
-
-const TOTAL_DOTS = categories.length;
-const DEGREES_PER_DOT = 360 / TOTAL_DOTS;
-
-const computeRange = (idx: number) => {
-  const years = categories[idx].items.map((i) => i.year);
-  return { start: Math.min(...years), end: Math.max(...years) };
-};
 
 export default function HistorySection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -98,7 +16,7 @@ export default function HistorySection() {
   const [prevIndex, setPrevIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hoveredDot, setHoveredDot] = useState<number | null>(null);
-  const [displayDates, setDisplayDates] = useState(() => computeRange(0));
+  const [displayDates, setDisplayDates] = useState(() => computeRange(categories[0]));
   const [currentItems, setCurrentItems] = useState<Item[]>(() => categories[0].items);
   const HOLD_DELAY = 400;
   const FADE_DURATION = 350;
@@ -121,7 +39,7 @@ export default function HistorySection() {
     if (animationRef.current.start) clearInterval(animationRef.current.start);
     if (animationRef.current.end) clearInterval(animationRef.current.end);
 
-    const targetDates = computeRange(currentIndex);
+    const targetDates = computeRange(categories[currentIndex]);
 
     animationRef.current.start = setInterval(() => {
       setDisplayDates((prev) => {

@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import "./HistorySection.sass";
 import SwiperCore from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules';
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation, Pagination]);
 
 type Item = { year: number; text: string };
 type Category = { id: number; badge: string; label: string };
@@ -200,8 +200,6 @@ export default function HistorySection() {
         </div>
         <div className="top">
           <div className="stage">
-            {/* <div className="circle_visible" style={{ transform: `rotate(${rotation}deg)` }}></div>
-            <div className="circle" style={{ transform: `rotate(${rotation}deg)` }}> */}
             <div className="circle_visible" style={{ ['--rot' as string]: `${rotation}deg`, transform: `rotate(${rotation}deg)` }}></div>
             <div className="circle" style={{ ['--rot' as string]: `${rotation}deg`, transform: `rotate(${rotation}deg)` }}>
               {categories.map((_, index) => (
@@ -264,13 +262,22 @@ export default function HistorySection() {
 
           <div className={`cards-container ${isFading ? 'cards-container--fade' : ''}`}>
             <Swiper
-              modules={[Navigation]}
-              spaceBetween={'80px'}
-              slidesPerView={3}
+              modules={[Navigation, Pagination]}
+              slidesPerView={1.5}
+              pagination={{ enabled: true, clickable: true, el: '.mobile-pagination',  }}
               navigation={{
-                nextEl: '.swiper-button-next',
+                enabled: false,
                 prevEl: '.swiper-button-prev',
+                nextEl: '.swiper-button-next',
               }}
+              breakpoints={{
+              321: {
+                slidesPerView: 3,
+                spaceBetween: 80,
+                pagination: { enabled: false },
+                navigation: { enabled: true},
+              },
+            }}
               onSwiper={(swiper) => {
                 swiperRef.current = swiper;
               }}
@@ -284,6 +291,7 @@ export default function HistorySection() {
                 </SwiperSlide>
               ))}
             </Swiper>
+          <div className="mobile-pagination"></div>
           <button className="btn_swiper swiper-button-prev">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M15 18l-6-6 6-6" stroke="#3877EE" strokeWidth="2"/>

@@ -51,7 +51,7 @@ body
   &::after
     content: ''
     position: absolute
-    top: 480px
+    top: 350px
     left: 0
     right: 0
     height: 1px
@@ -386,6 +386,7 @@ body
   opacity: 1
   transition: opacity .3s ease
   will-change: opacity
+  cursor: grab
 
 .cards-container--fade
   opacity: 0
@@ -399,3 +400,132 @@ body
 
   &:last-child
     margin-right: 0 !important
+
+.swiper .swiper-pagination
+  display: none !important
+
+.mobile-pagination
+  display: none !important
+
+
+@media (max-width: 320px)
+  .circle_visible 
+    display: none
+  .circle
+    display: none
+  .cards-container
+    width: 280px
+  .container
+    width: 320px
+  .title-bar
+    display: none
+  .dot
+    display: none
+  .category
+    display: none
+  .title
+    margin-left: 20px
+    font-size: 20px
+  .years
+    gap:35px
+    left:50%
+    margin-top:150px
+  .year
+    font-size: 56px
+  .top
+    border-left: 0px solid rgba(66, 86, 122, 0.1);
+    border-right: 0px solid rgba(66, 86, 122, 0.1);
+    &::before
+      content: ''
+      display: none
+    &::after
+      content: ''
+      display: none
+      top: 0px
+  .btn_swiper
+    display: none
+  .bottom
+    top: 313px
+    left:0px
+  .stage
+    min-height: 0px
+    margin-top: 0px
+  .container
+    height: 100dvh 
+    overflow: clip
+    max-height: none
+    transform: translateX(0px)
+  .title-wrap
+    top: 59px
+  .controls
+    margin-bottom: 0px;
+  .bottom
+    width: 90%
+    margin-left:20px
+    top:293px
+    display: flex
+    flex-direction: column
+    gap: 75px
+    margin-right: 0
+    border-top: 1px solid rgba(66, 86, 122, 0.1);
+
+  .cards-container
+    margin-top: 20px
+    order: -1
+
+  .controls
+    order: 0
+    width: 58px
+    margin-left:-10px
+    gap:10px
+  .icon-btn
+    width: 25px;
+    height: 25px;
+  .nav
+    gap: 8.3px
+  .counter
+    align-self: center
+  .top
+    height: 20%
+  .card
+    gap:10px
+  .card
+    max-width: 166px
+  .swiper-slide
+    margin-right: 25px !important;
+  .card__text
+    min-width: 120px
+  .card--second
+    max-width: 166px !important 
+  .card__year
+    font-size: 16px
+  .card__text
+    font-size: 14px
+  .swiper-pagination
+    position: relative
+    bottom: 20px !important
+  .mobile-pagination
+    position: fixed
+    left: 0
+    right: 0
+    bottom: 12px
+    display: flex
+    justify-content: center
+    z-index: 9999
+    pointer-events: auto
+
+  .mobile-pagination .swiper-pagination-bullet
+    width: 6px
+    height: 6px
+    opacity: 1
+    background: $border
+    margin: 0 4px
+  .mobile-pagination
+    display: block !important
+    gap:10px
+    margin-left:130px
+    bottom: 32px!important
+
+  .mobile-pagination .swiper-pagination-bullet-active
+    border-radius: 999px
+    background: $blue1

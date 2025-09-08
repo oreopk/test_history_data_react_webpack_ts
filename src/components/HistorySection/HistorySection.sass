@@ -187,6 +187,7 @@ body
   opacity: 0
   pointer-events: none
   z-index: 4 
+  transform: scale(0)
 
 .category--active
   opacity: 1
@@ -200,8 +201,6 @@ body
     transform: scale(1)
     transform: rotate(-30deg)
     transition-delay: var(--spin-dur, .5s) 
-  .badge
-    background: #f4f6fb
 
 .category--leaving
   opacity: 0
@@ -210,19 +209,18 @@ body
 .category--hidden
   opacity: 0
   transform: scale(0)
-  transition: all 0.56s ease
 
 .category--hover
   opacity: 1 !important
   z-index: 3 !important
   transform: scale(1)
-  transition: all 0.7s ease-in-out
+  transition: all 0.5s ease-in-out
 
   .category__label
     display: none !important
   .badge
-    background: #f4f6fb
-    transition: all 0.56s ease
+    opacity: 1
+    visibility: visible
 
 @for $i from 1 through 6
   .category--#{$i}
@@ -242,6 +240,7 @@ body
   transition: all 0.5s ease-in-out
   font-family: 'PT Sans'
   font-weight: 100
+  font-size: 20px
   font-weight: bold
   opacity: 0
   transform: rotate(-30deg) translateY(6px) scale(.98)
@@ -273,7 +272,6 @@ body
   font-weight: 400
   font-size: 20px
   transform: none
-  background: #2a3d66
 
 .controls
   width: 120px

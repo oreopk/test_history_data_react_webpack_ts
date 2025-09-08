@@ -48,6 +48,16 @@ body
     height: 1px
     background: rgba(66, 86, 122, 0.1)
     z-index: 1
+  &::after
+    content: ''
+    position: absolute
+    top: 480px
+    left: 0
+    right: 0
+    height: 1px
+    background: rgba(66, 86, 122, 0.1)
+    z-index: 1
+    rotate: (90deg)
 
 .bottom
   position: absolute
@@ -225,7 +235,18 @@ body
   font-weight: 100
   font-size: 20px
   font-weight: bold
-  display: none
+  opacity: 0
+  transform: rotate(-30deg) translateY(6px) scale(.98)
+  transition: opacity .3s ease, transform .3s ease
+  pointer-events: none
+
+.category__label--visible
+  opacity: 1
+  transform: rotate(-30deg) translateY(0) scale(1)
+.category--hover
+  .category__label
+    opacity: 0 !important
+
 
 .badge
   display: flex
@@ -287,6 +308,7 @@ body
   max-width: 320px
   flex-direction: column
   gap: 14px
+  transition: transform .3s ease, filter .3s ease
 
 .card__year
   margin: 0 0 0px
@@ -353,6 +375,12 @@ body
 .cards-container
   position: relative
   width: 85%
+  opacity: 1
+  transition: opacity .3s ease
+  will-change: opacity
+
+.cards-container--fade
+  opacity: 0
 
 .swiper-slide
   width: auto !important

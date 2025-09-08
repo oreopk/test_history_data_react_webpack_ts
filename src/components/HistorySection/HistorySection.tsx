@@ -74,7 +74,11 @@ export default function HistorySection() {
   const [hoveredDot, setHoveredDot] = useState<number | null>(null);
   const [displayDates, setDisplayDates] = useState<DateRange>(dateRanges[0]);
   const [currentItems, setCurrentItems] = useState<Item[]>(categoryItems[0]);
-  
+  const HOLD_DELAY = 400;
+  const FADE_DURATION = 350;
+  const [isFading, setIsFading] = useState(false);
+  const [labelIndex, setLabelIndex] = useState(0);
+
   const animationRef = useRef<{ start: NodeJS.Timeout | null; end: NodeJS.Timeout | null }>({
     start: null,
     end: null
@@ -83,8 +87,12 @@ export default function HistorySection() {
   const swiperRef = useRef<any>(null);
 
   useEffect(() => {
-    setCurrentItems(categoryItems[currentIndex]);
-    
+    const t = setTimeout(() => setLabelIndex(currentIndex), HOLD_DELAY);
+    return () => clearTimeout(t);
+  }, [currentIndex]);
+
+
+  useEffect(() => {
     if (animationRef.current.start) clearInterval(animationRef.current.start);
     if (animationRef.current.end) clearInterval(animationRef.current.end);
     
@@ -123,6 +131,22 @@ export default function HistorySection() {
     return () => {
       if (animationRef.current.start) clearInterval(animationRef.current.start);
       if (animationRef.current.end) clearInterval(animationRef.current.end);
+    };
+  }, [currentIndex]);
+  useEffect(() => {
+    let swapTimer: NodeJS.Timeout | null = null;
+
+    const holdTimer = setTimeout(() => {
+      setIsFading(true);
+      swapTimer = setTimeout(() => {
+        setCurrentItems(categoryItems[currentIndex]);
+        setIsFading(false);
+      }, FADE_DURATION);
+    }, HOLD_DELAY);
+
+    return () => {
+      clearTimeout(holdTimer);
+      if (swapTimer) clearTimeout(swapTimer);
     };
   }, [currentIndex]);
 
@@ -203,7 +227,10 @@ export default function HistorySection() {
                 return (
                   <div key={category.id} className={className}>
                     <span className={`badge badge--${category.id}`}>{category.badge}</span>
-                    <span className="category__label">{category.label}</span>
+                    <span
+                      className={`category__label ${index === labelIndex ? 'category__label--visible' : ''}`}>
+                        {category.label}
+                    </span>
                   </div>
                 );
               })}
@@ -235,7 +262,7 @@ export default function HistorySection() {
             </div>
           </div>
 
-          <div className="cards-container">
+          <div className={`cards-container ${isFading ? 'cards-container--fade' : ''}`}>
             <Swiper
               modules={[Navigation]}
               spaceBetween={'80px'}
